@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>杭职OJ答案-1011</title>
+<link rel="stylesheet" type="text/css" href="../../css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="../../css/hoj.css">
+<script src="../../js/jquery-1.8.3.js"></script>
+<script src="../../js/jquery-ui-1.9.2.custom.js"></script>
+
+</head>
+<body>
+<!-- 头部 -->
+<div id="head">
+	<h2>1011: 我想我需要一条船</h2>
+</div>
+<!-- 主体 -->
+<div id="body" class="container">
+	<h3>题目描述</h3>
+    <pre>
+Fred想在路易斯安那建一所自己的房子，如果要开发这块地，他了解到路易斯安那正在每年缩水50平方英里，原因是密西西比河的侵蚀。Fred想在这块地上安度余生，他想知道几年后，房子是否<br>会被侵蚀。
+做了一些调查研究后，Fred了解到陆地的陷入是一个半圆形，圆心坐标在(0,0)，刚好半圆边缘的直径在X轴上。X轴以下的都在水中，一开始第一年，半圆的面积是0。如图所示的半圆正在逐年<br>扩大。
+<img src="../../images/hoj/1011.gif" alt="">
+	</pre>
+    <h3>输入</h3>
+    <pre>
+第一行是一个正整数N，表示有N组测试数据。
+接下来的N行，每行包含一个坐标X和Y，表示Fred想建房子的坐标，都是浮点数，单位为英里，Y值大于0，(0,0)坐标不会出现。
+	</pre>
+    <h3>输出</h3>
+    <pre>
+每组测试输出一行。必须按照如下格式：
+"Property N: This property will begin eroding in year Z."
+N表示测试数据编号，从1开始，Z表示在Z年年底，Fred的房子会陷入水中，即包含在半圆中，Z必须是一个整数。注意：这个点要么在半圆内，要么在半圆外，不会在边界上。
+在整个数据输出的结尾，输出"END OF OUTPUT."
+	</pre>
+    <h3>样例输入</h3>
+    <pre>
+2 
+1.0 1.0 
+25.0 0.0
+    </pre>
+    <h3>样例输出</h3>
+    <pre>
+Property 1: This property will begin eroding in year 1.
+Property 2: This property will begin eroding in year 20.
+END OF OUTPUT.
+    </pre>
+    <h3>题意</h3>
+    <pre>
+还没写,坐等大佬!
+    </pre>
+    <h3>JAVA解法</h3>
+    <pre>
+还没写,坐等大佬!
+    </pre>
+    <h3>C++解法</h3>
+    <pre>
+#include&lt;iostream&gt;
+#include&lt;cmath&gt;
+using namespace std;
+
+bool Judge(double x,double y,double r) 
+{ 
+    double dis; 
+    dis=sqrt(x*x+y*y); 
+    if(dis&lt;r) 
+        return true; 
+    else return false; 
+} 
+int main() 
+{ 
+    int n,i,year; 
+    double x,y,r; 
+    const double PI=3.141592653; 
+    while(cin&gt;&gt;n) 
+    { 
+        for(i=1;i&lt;=n;i++) 
+        { 
+            cin&gt;&gt;x&gt;&gt;y; 
+            year=1; 
+            while(true) 
+            { 
+                r=sqrt(100.0*(double)year/PI); 
+                if(Judge(x,y,r)) 
+                { 
+                    cout&lt;&lt;"Property "&lt;&lt;i&lt;&lt;": This property will begin eroding in year "&lt;&lt;year&lt;&lt;"."&lt;&lt;endl; 
+                    break; 
+                } 
+                year++; 
+            } 
+        } 
+        cout&lt;&lt;"END OF OUTPUT."&lt;&lt;endl; 
+    } 
+        return 0; 
+} 
+    </pre>
+</div>
+
+
+<script src="http://cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script> 
+<script src="../../js/bootstrap.min.js"></script>
+</body>
+</html>

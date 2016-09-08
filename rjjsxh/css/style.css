@@ -1,0 +1,259 @@
+/*弹幕*/
+.editor-style-content * {
+	max-width: 100%!important;
+	box-sizing: border-box!important;
+	-webkit-box-sizing: border-box!important;
+	word-wrap: break-word!important;
+}
+.editor-style-content p {
+	margin: 0 0;
+	clear: both;
+	min-height: 1em;
+}
+/*导航条*/
+.logo{
+	background:url(../images/logo-wide.jpg) no-repeat;
+	width:400px;
+	text-indent:-9999px;
+}
+.navbar{
+	margin-bottom:0;
+	background-color:#fff;
+	border:0px;
+	border-radius:0;
+	opacity:0.95;
+	position:fixed;
+	top:0;
+	z-index:2;
+	width:100%
+}
+.navbar a{
+	color:#000 !important;
+	opacity:1;
+}
+.nav-left li:hover{
+	background:#eee;
+}
+/*登录按钮*/
+nav button{
+	margin-top:10px;
+	margin-right:50px;
+	padding:5px 10px;
+	border:0;
+	border-radius:10px;
+	opacity:1;
+}
+/*轮播图*/
+#carousel-example-generic, body>img{
+	margin-top:50px;
+}
+.carousel-inner > .item > img{
+	height:400px;
+	width:100%;
+}
+
+.carousel-inner > .item a {
+	color:#fff;
+	text-decoration:none;
+}
+
+/*主体*/
+#main{
+	margin-bottom:50px;
+	min-height: 600px;
+}
+.well{
+	background: #f9f9f9;
+}
+.date{
+	float:right;
+}
+.breadcrumb{
+	background:#fff;	
+}
+.banner{
+	background:url(../images/noon.jpg) no-repeat center;
+	height:160px;
+	margin-top:50px;
+	padding-top:85px;
+}
+.banner .container{
+	text-align:center;
+}
+.banner .container span{
+	font-size:16px;
+	color:#fff;
+}
+.well>span{
+	float:right;
+}
+#paging{
+	text-align:center;
+}
+#list th{
+	font-size: 18px;
+}
+#list th span:nth-child(2){
+	float:right;
+}
+#list th span span{
+	font-weight: bolder;
+	padding-left: 5px;
+}
+#noticeDetail h3{
+	text-align: center;
+	padding-bottom: 10px;
+	margin-top: 0px;
+}
+#noticeDetail .noticeDate{
+	text-align: center;
+	padding-bottom: 16px;
+}
+#noticeDetail .noticeDate span span{
+	padding-left: 5px;
+}
+#noticeDetail .noticeContent{
+	border-top:#777777 1px solid;
+	padding-top: 16px;
+}
+#noticeDetail .noticeContent p, .well p{
+	text-indent:2em;
+}
+#noticeDetail table th{
+	font-size: 20px;
+	padding-bottom: 15px;
+}
+#noticeDetail table th span span{
+	padding-left: 5px;
+}
+#noticeDetail .noticeContent>img{
+	display:block;
+        width:85%;
+	margin:5px auto;
+}
+.jumbotron{
+	background:#fff;
+}
+.jumbotron img{
+	display:block;
+	width:30%;
+	margin:0 auto;
+}
+.board tr td:nth-child(1){
+    width:10%;
+    background: #eeefff;
+}
+.board tr td:nth-child(2){
+    width:80%;
+}
+.board tr td:nth-child(3){
+    width:10%;
+    background: #eeefff;
+}
+#messageBox{
+    width:50%;
+    margin:0 auto;
+}
+#publish,#changeboard{
+    display: block;
+    padding:5px 10px;
+    margin:10px auto;
+    border:0;
+    border-radius: 5px;
+}
+#modifyPsw{
+    margin-right: 5px;
+}
+/*尾部*/
+#footer{
+	background:#eee;
+}
+#footer>span{
+	color:#5c5248;
+    display:block;
+	text-align:center;
+}
+#footer>span>a{
+	color:#5c5248;
+}
+/*模态框*/
+.modal-body div{
+	margin:20px auto;
+	width:90%;
+}
+.modal-body div span{
+	background:#fff;
+	border-right:0px;
+}
+.modal-body div input{
+	border-left:0px;
+}
+.modal-body div button{
+	padding:9px;
+	margin:0;
+	border:0;
+}
+.modal-content, .modal-body div span, .modal-body div input{
+	border-radius:0px;
+}
+#subCheck>input{
+        padding:3px 10px;
+        position: absolute;
+        right:8%;
+        bottom:15px;
+}
+/*文字滚动*/
+.rollboard{
+    height:400px;
+	width:100%;
+}
+marquee{
+    position: absolute;
+    font-family: microsoft yahei;
+}
+
+/*平板屏*/
+@media (min-width: 768px) and (max-width:991px){
+    nav button{
+            margin-top:10px;
+            margin-right:-6px;
+            padding:5px 10px;
+            border:0;
+            border-radius:10px;
+            opacity:1;
+    }
+}
+
+/*手机屏*/
+@media (max-width: 767px) {
+	.logo{
+		background:url(../images/logo.jpg) no-repeat;
+		width:240px;
+		text-indent:-9999px;
+	}
+	nav ul li{
+		text-align:center;
+	}
+	#sign, #logout, #modifyPsw{
+		border-radius:0;
+		margin:0;
+		width:100%;
+	}
+	.carousel-inner > .item > img{
+		height:200px;
+		width:100%;
+	}
+	#noticeDetail .noticeContent>img{
+		display:block;
+		width:100%;
+		margin:0 auto;
+	}
+	.jumbotron img{
+		display:block;
+		width:70%;
+		margin:0 auto;
+	}
+	#messageBox{
+		width: 100%;
+	}
+}

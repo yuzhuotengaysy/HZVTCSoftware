@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>杭职OJ答案-1006</title>
+<link rel="stylesheet" type="text/css" href="../../css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="../../css/hoj.css">
+<script src="../../js/jquery-1.8.3.js"></script>
+<script src="../../js/jquery-ui-1.9.2.custom.js"></script>
+
+</head>
+<body>
+<!-- 头部 -->
+<div id="head">
+	<h2>1006: 判闰年</h2>
+</div>
+<!-- 主体 -->
+<div id="body" class="container">
+	<h3>题目描述</h3>
+    <pre>
+老杨一到二月就犯糊涂，这个二月到底有几天？
+	</pre>
+    <h3>输入</h3>
+    <pre>
+输入有三个数，分别表示三个年份
+	</pre>
+    <h3>输出</h3>
+    <pre>
+输出这三个年份的二月份有几天，每个数据占一行
+	</pre>
+    <h3>样例输入</h3>
+    <pre>
+2012
+2013
+2014
+    </pre>
+    <h3>样例输出</h3>
+    <pre>
+29
+28
+28
+    </pre>
+    <h3>题意</h3>
+    <pre>
+判断闰年
+    </pre>
+    <h3>JAVA解法</h3>
+    <pre>
+还没写,坐等大佬!
+    </pre>
+    <h3>C++解法</h3>
+    <pre>
+#include&lt;iostream&gt;
+using namespace std;
+
+int main() {
+    int N=3;
+    while (N--) {
+        int year;
+        cin &gt;&gt; year;
+        if (year % 4 == 0 && year % 100 != 0 || year % 400 == 0) cout &lt;&lt; 29 &lt;&lt; endl;
+        else cout &lt;&lt; 28 &lt;&lt; endl;
+    }
+    return 0;
+}
+    </pre>
+</div>
+
+
+<script src="http://cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script> 
+<script src="../../js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,55 @@
+/*弹幕*/
+.editor-style-content * {
+	max-width: 100%!important;
+	box-sizing: border-box!important;
+	-webkit-box-sizing: border-box!important;
+	word-wrap: break-word!important;
+}
+.editor-style-content p {
+	margin: 0 0;
+	clear: both;
+	min-height: 1em;
+}
+
+
+body{
+	background:url(../images/hoj/background.jpg);
+}
+#head{
+	text-align:center;
+}
+#search{
+	width:30%;
+	margin:10px auto;
+}
+#table{
+	width:70%;
+	margin:30px auto;
+}
+th, td{
+	text-align:center;
+}
+#paging{
+	text-align:center;
+}
+#footer{
+	background:#eee;
+}
+#footer p{
+	color:#5c5248;
+	text-align: center;
+}
+#footer p a{
+	color:#5c5248;
+}
+/*手机屏*/
+@media (max-width: 767px) {
+	#search{
+		width:75%;
+		margin:10px auto;
+	}
+	#table{
+		width:100%;
+		margin:30px auto;
+	}
+}

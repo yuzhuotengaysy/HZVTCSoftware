@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>杭职OJ答案-1005</title>
+<link rel="stylesheet" type="text/css" href="../../css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="../../css/hoj.css">
+<script src="../../js/jquery-1.8.3.js"></script>
+<script src="../../js/jquery-ui-1.9.2.custom.js"></script>
+
+</head>
+<body>
+<!-- 头部 -->
+<div id="head">
+	<h2>1005: 无脑僵尸</h2>
+</div>
+<!-- 主体 -->
+<div id="body" class="container">
+	<h3>题目描述</h3>
+    <pre>
+僵尸爱吃人脑。 
+这里有活人！~~ 
+No~！！！~~~！ 
+味道好极了！~
+<img src="../../images/hoj/1005.jpg" alt="" width="299" height="417">
+	</pre>
+    <h3>输入</h3>
+    <pre>
+两行数据，每行两个数据，X表示僵尸数量，Y表示活人数量
+	</pre>
+    <h3>输出</h3>
+    <pre>
+僵尸吃活人的脑子，如果保证每个僵尸至少吃上一个活脑，僵尸们就集体Mmm Brains~~，否则，僵尸们大吼No Brains！！
+	</pre>
+    <h3>样例输入</h3>
+    <pre>
+4 5
+4 3
+    </pre>
+    <h3>样例输出</h3>
+    <pre>
+Mmm Brains~~
+No Brains!!
+    </pre>
+    <h3>题意</h3>
+    <pre>
+输入两行数字,每行第一个数为僵尸数X,第二个数为活人数量Y,如果X&lt;=Y,则输出"Mmm Brains~~"，否则输出"No Brains！！".
+    </pre>
+    <h3>JAVA解法</h3>
+    <pre>
+还没写,坐等大佬!
+    </pre>
+    <h3>C++解法</h3>
+    <pre>
+#include&lt;iostream&gt;
+using namespace std;
+
+int main() {
+    int N=2;
+    while (N--) {
+        int x, y;
+        cin &gt;&gt; x &gt;&gt; y;
+        if (x &lt;= y) cout &lt;&lt; "Mmm Brains~~" &lt;&lt; endl;
+        else cout &lt;&lt; "No Brains!!" &lt;&lt; endl;
+    }
+    return 0;
+}
+    </pre>
+</div>
+
+
+<script src="http://cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script> 
+<script src="../../js/bootstrap.min.js"></script>
+</body>
+</html>
