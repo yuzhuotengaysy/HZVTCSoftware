@@ -1,0 +1,8 @@
+.modal-body input{
+	margin:10px 0;
+}
+.modal-body select{
+	border:1px solid #e5e6e7 !important;
+	border-radius: 1px !important;
+	padding:6px 12px !important;
+}

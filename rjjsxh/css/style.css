@@ -1,3 +1,6 @@
+﻿html,body{
+	height: 100%;
+}
 /*弹幕*/
 .editor-style-content * {
 	max-width: 100%!important;
@@ -35,14 +38,18 @@
 	background:#eee;
 }
 /*登录按钮*/
-nav button{
-	margin-top:10px;
-	margin-right:50px;
-	padding:5px 10px;
-	border:0;
-	border-radius:10px;
+.navbar-btn{
 	opacity:1;
 }
+.signBtn{
+	position:absolute;
+	right:8%;
+	bottom:35px;
+}
+.input-group img{
+	margin-left:10px;
+}
+
 /*轮播图*/
 #carousel-example-generic, body>img{
 	margin-top:50px;
@@ -59,11 +66,17 @@ nav button{
 
 /*主体*/
 #main{
-	margin-bottom:50px;
-	min-height: 600px;
+	margin-bottom:-50px;
+	padding-bottom: 100px;
+	min-height: 100%;
 }
 .well{
-	background: #f9f9f9;
+	background: url(../images/badapple.png) rgba(255,255,255,.2) no-repeat 100% 100%;
+	box-shadow:0 3px 0 rgba(12,12,12,.03);
+	padding:25px;
+}
+.well>span{
+	float:right;
 }
 .date{
 	float:right;
@@ -83,9 +96,6 @@ nav button{
 .banner .container span{
 	font-size:16px;
 	color:#fff;
-}
-.well>span{
-	float:right;
 }
 #paging{
 	text-align:center;
@@ -139,31 +149,49 @@ nav button{
 	width:30%;
 	margin:0 auto;
 }
+/* 网站信息 */
+.about{
+	text-align:center;
+}
+
+/* 个人信息 */
+.userInfo{
+	text-align:center;
+}
+.userInfo input{
+	margin:0 auto;
+}
+.userBtn{
+	background: #fff;
+}
+/* 留言板 */
 .board tr td:nth-child(1){
     width:10%;
-    background: #eeefff;
+    text-align: center; 
 }
 .board tr td:nth-child(2){
-    width:80%;
-}
-.board tr td:nth-child(3){
-    width:10%;
-    background: #eeefff;
+    width:90%;
 }
 #messageBox{
     width:50%;
     margin:0 auto;
 }
-#publish,#changeboard{
+#publish, #changeboard{
     display: block;
     padding:5px 10px;
     margin:10px auto;
     border:0;
     border-radius: 5px;
 }
+#publish{
+	background: #fff;
+	border:1px solid #ccc;
+}
+/*修改密码*/
 #modifyPsw{
     margin-right: 5px;
 }
+
 /*尾部*/
 #footer{
 	background:#eee;
@@ -185,9 +213,7 @@ nav button{
 	background:#fff;
 	border-right:0px;
 }
-.modal-body div input{
-	border-left:0px;
-}
+
 .modal-body div button{
 	padding:9px;
 	margin:0;
@@ -196,15 +222,28 @@ nav button{
 .modal-content, .modal-body div span, .modal-body div input{
 	border-radius:0px;
 }
-#subCheck>input{
-        padding:3px 10px;
-        position: absolute;
-        right:8%;
-        bottom:15px;
+#subCheck .sub, #subAdminCheck .sub{
+    padding:3px 10px;
+    position: absolute;
+    right:8%;
+    bottom:39px;
 }
+#subCheck .submodify{
+    padding:3px 10px;
+    position: absolute;
+    right:8%;
+    bottom:15px;
+}
+#subCheck img,#subAdminCheck img{
+	margin: 0px 10px;
+}
+.code{
+	width:120px !important;
+}
+
 /*文字滚动*/
 .rollboard{
-    height:400px;
+    height:600px;
 	width:100%;
 }
 marquee{
@@ -234,7 +273,7 @@ marquee{
 	nav ul li{
 		text-align:center;
 	}
-	#sign, #logout, #modifyPsw{
+	#signIn, #signOut, #modifyPsw ,#register{
 		border-radius:0;
 		margin:0;
 		width:100%;

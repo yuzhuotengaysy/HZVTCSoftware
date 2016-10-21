@@ -70,7 +70,7 @@ $("document").ready(function(e) {
 
     //水印
     var logo = new Image();
-    logo.src = "../images/logo.jpg";
+    logo.src = "images/logo.jpg";
     logo.onload = function(){
         context.drawImage(logo, 200, 380, 240, 48);
         drawChessBoard();
