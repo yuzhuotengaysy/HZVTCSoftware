@@ -172,7 +172,7 @@
 .board tr td:nth-child(2){
     width:90%;
 }
-#messageBox{
+#messageBox, #mestext{
     width:50%;
     margin:0 auto;
 }
@@ -292,7 +292,7 @@ marquee{
 		width:70%;
 		margin:0 auto;
 	}
-	#messageBox{
+	#messageBox, #mestext{
 		width: 100%;
 	}
 }

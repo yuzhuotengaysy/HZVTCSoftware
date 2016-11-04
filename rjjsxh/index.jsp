@@ -1,6 +1,5 @@
-<%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
-<%@ page import="java.sql.*"%>
-<%@ include file="main/connect.jsp" %>
+<%@ page language="java" import="java.util.*,com.*,service.*" pageEncoding="utf-8"%>
+
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
@@ -80,10 +79,10 @@
                 <tspan>
                   欢迎来到杭职软件技术协会站点~~~您是第
                     <%
-                      stmt.executeUpdate("update `visitors` set visnum = visnum + 1 where visid = 1");
-                      ResultSet res = stmt.executeQuery("select visnum from `visitors` where visid = 1");
-                      res.next();
-                      out.print(res.getString("visnum"));
+                      VisitorsService visitorsservice = new VisitorsService();
+                      Visitors visitors = new Visitors();
+                      visitorsservice.update(visitors);
+                      out.print(visitorsservice.query().getVisnum());
                     %>
                   位访客QAQ
                 </tspan>
@@ -104,19 +103,22 @@
                 </h3>
                 <div class="col-sm-12">
                     <table class="table table-hover table-striped table-condensed">
-                        <%                            
-                            int count = 8;
-                            String sql = "select * from notice order by nottime desc";
-                            res = stmt.executeQuery(sql);
-                            while(count>0 && res.next()){
-                                String noticetime = res.getString(5);      
-                                noticetime = noticetime.substring(0, 11);                      
+                        <%                
+                            NoticeService noticeservice = new NoticeService();
+                            Notice notice = new Notice();  
+                            List notice_list = noticeservice.queryDesc();
+                            int count = notice_list.size(), i = 0;  //count:最多公告数,i：计数器
+                            if(count > 8) count = 8;
+                            while(count-- > 0){
+                                String nottime = ((Notice)notice_list.get(i)).getNottime(); //公告发布时间   
+                                nottime = nottime.substring(0, 11);                      
                         %>
                             <tr>
-                                <td><a href="noticedetail.jsp?id=<%=res.getString(1)%>"><%=res.getString(2)%></a><span class="date"><%=noticetime%></span></td>
+                                <td><a href="noticedetail.jsp?id=<%=((Notice)notice_list.get(i)).getNotid()%>"><%=((Notice)notice_list.get(i)).getNottitle()%></a><span class="date"><%=nottime%></span></td>
                             </tr>
                         <%
-                            count--;}
+                                i++;
+                            }
                         %>
                         <tr>
                             <td><a href="noticelist.jsp" style="float: right">更多公告...</a></td>
@@ -162,23 +164,27 @@
                 </div>
                 <h3 class="title">
                     <span class="glyphicon glyphicon-file"></span>
-                    资源链接
+                    资源下载
                 </h3>
                 <div class="col-sm-12" >
                     <table class="table table-hover table-striped table-condensed">
                         <%
-                            sql = "select * from data order by datatime desc";
-                            res = stmt.executeQuery(sql);
-                            count = 5;
-                            while(count>0 && res.next()){
-                                String datatime = res.getString(4);      
-                                datatime = datatime.substring(0, 11);   
+                            DataService dataservice = new DataService();
+                            Data data = new Data();
+                            List data_list = dataservice.queryDesc();
+                            count = data_list.size();    //count:最多资源数,i：计数器   
+                            i = 0;  
+                            if(count > 8) count = 8;
+                            while(count-- > 0){
+                                String datatime = ((Data)data_list.get(i)).getDatatime(); //公告发布时间   
+                                datatime = datatime.substring(0, 11);                    
                         %>
                             <tr>
-                                <td><a href="<%=res.getString(3)%>" target="_blank"><%=res.getString(2)%></a><span class="date"><%=datatime%></span></td>
+                                <td><a href="download/<%=((Data)data_list.get(i)).getDatalink()%>" target="_blank"><%=((Data)data_list.get(i)).getDataname()%></a><span class="date"><%=datatime%></span></td>
                             </tr>
                         <%
-                           count--;}
+                           i++;
+                         }
                         %>
                         <tr>
                             <td><a href="data.jsp" style="float: right">更多资源...</a></td>
@@ -197,7 +203,6 @@
 </div>
 <!-- 模态框 -->
 <%@ include file="main/modal.jsp" %>
-<% conn.close(); %>
 <script src="js/bootstrap.js"></script>
 </body>
 </html>

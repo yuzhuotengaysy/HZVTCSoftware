@@ -1,8 +1,10 @@
-<%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
-<%@ page import="java.sql.*"%>
-<%@ include file="../../main/connect.jsp" %>
+<%@ page language="java" import="java.util.*,com.*,service.*" pageEncoding="utf-8"%>
+
 <%
 	request.setCharacterEncoding("utf-8");
+	AboutService aboutservice = new AboutService();
+    About about = new About();
+
 	//获得信息
 	String name = request.getParameter("aboname");
 	String title = request.getParameter("abotitle");
@@ -13,17 +15,15 @@
 	String address = request.getParameter("aboaddress");
 	String description = request.getParameter("abodescription");
 
-	String sql = "update about set abotitle=?,abokeyword=?,abocontact=?,abotel=?,aboemail=?,aboaddress=?,abodescription=? where aboname = ?";
-	pstmt = conn.prepareStatement(sql);
-	pstmt.setString(1, title);
-	pstmt.setString(2, keyword);
-	pstmt.setString(3, contact);
-	pstmt.setString(4, tel);
-	pstmt.setString(5, email);
-	pstmt.setString(6, address);
-	pstmt.setString(7, description);
-	pstmt.setString(8, name);
-	pstmt.executeUpdate();																	//修改信息
-	conn.close();
+	//存入信息
+	about.setAboname(name);
+	about.setAbotitle(title);
+	about.setAbokeyword(keyword);
+	about.setAbocontact(contact);
+	about.setAbotel(tel);
+	about.setAboemail(email);
+	about.setAboaddress(address);
+	about.setAbodescription(description);
+	aboutservice.update(about);																//更新信息
 	out.print("<script>alert('修改成功');location.href = '../system.jsp'; </script>");		//网页跳转回上级页面
 %>

@@ -1,5 +1,4 @@
-<%@ page language="java" import="java.util.*, java.sql.*" pageEncoding="utf-8"%>
-<%@ include file="../main/connect.jsp" %>
+<%@ page language="java" import="java.util.*,com.*,service.*" pageEncoding="utf-8"%>
 
 <!DOCTYPE html>
 <html>
@@ -43,23 +42,27 @@
                                     </thead>
                                     <tbody>
                                         <%
-                                            ResultSet res = stmt.executeQuery("select * from message");
-                                            while(res.next()){
-                                            String mesid = res.getString(1);
-                                            String time = res.getString(4);
-                                            time = time.substring(0,16);
+                                            MessageService messageservice = new MessageService();
+                                            Message message = new Message();
+                                            List message_list = messageservice.query();
+                                            int count = message_list.size(), i = 0;
+                                            while(count-- > 0){
+                                                int mesid = ((Message)message_list.get(i)).getMesid();
+                                                String time = ((Message)message_list.get(i)).getMestime(); 
+                                                time = time.substring(0, 11);   
                                         %>  
                                         <tr class="gradeX">          
                                             <td class='tc'><input name='id' value="<%=mesid%>" type='checkbox'></td>
                                             <td><%=mesid%></td>
-                                            <td><%=res.getString(2)%></td>  
-                                            <td><%=res.getString(3)%></td>  
+                                            <td><%=((Message)message_list.get(i)).getMesnickname()%></td>  
+                                            <td><%=((Message)message_list.get(i)).getMestext()%></td>  
                                             <td><%=time%></td> 
                                             <td>
                                                 <input type="button" class="btn btn-danger message_del" value="删除">
                                             </td>                   
                                         </tr>      
                                         <%
+                                                i++;
                                             }
                                         %>                           
                                     </tbody>

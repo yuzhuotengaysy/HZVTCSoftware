@@ -1,5 +1,4 @@
-<%@ page language="java" import="java.util.*, java.sql.*" pageEncoding="utf-8"%>
-<%@ include file="../main/connect.jsp" %>
+<%@ page language="java" import="java.util.*,com.*,service.*" pageEncoding="utf-8"%>
 
 <!DOCTYPE html>
 <html>
@@ -46,18 +45,21 @@
                                     </thead>
                                     <tbody>
                                         <%
-                                            ResultSet res = stmt.executeQuery("select * from notice");
-                                            while(res.next()){
-                                            String notid = res.getString(1);
-                                            String time = res.getString(5);
-                                            time = time.substring(0,10);
+                                            NoticeService noticeservice = new NoticeService();
+                                            Notice notice = new Notice();
+                                            List notice_list = noticeservice.query();
+                                            int count = notice_list.size(), i = 0;
+                                            while(count-- > 0){
+                                                int notid = ((Notice)notice_list.get(i)).getNotid();
+                                                String time = ((Notice)notice_list.get(i)).getNottime(); 
+                                                time = time.substring(0, 11);   
                                         %>  
                                         <tr class="gradeX">          
                                             <td class='tc'><input name='id' value="<%=notid%>" type='checkbox'></td>
                                             <td><%=notid%></td>
-                                            <td><%=res.getString(2)%></td>  
-                                            <td><%=res.getString(3)%></td>  
-                                            <td style="display:none"><%=res.getString(4)%></td>  
+                                            <td><%=((Notice)notice_list.get(i)).getNottitle()%></td>  
+                                            <td><%=((Notice)notice_list.get(i)).getNotauthor()%></td>  
+                                            <td style="display:none"><%=((Notice)notice_list.get(i)).getNotcontent()%></td>  
                                             <td><%=time%></td>  
                                             <td>
                                                 <input type="button" class="btn btn-primary notice_modify" value="修改">
@@ -65,6 +67,7 @@
                                             </td>                   
                                         </tr>    
                                         <%
+                                                i++;
                                             }
                                         %>                            
                                     </tbody>
@@ -84,6 +87,7 @@
         </div>
     <script src="js/jquery.min.js-v=2.1.4.js"></script>
     <script src="js/bootstrap.min.js-v=3.3.5.js"></script>
+    <script src="js/fix.js"></script>
     <script src="js/plugins/footable/footable.all.min.js"></script>
     <script src="js/plugins/sweetalert/sweetalert.min.js"></script>
     <script src="ckeditor/ckeditor.js"></script>

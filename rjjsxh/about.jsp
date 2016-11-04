@@ -1,6 +1,5 @@
-<%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
-<%@ page import="java.sql.*"%>
-<%@ include file="main/connect.jsp" %>
+<%@ page language="java" import="java.util.*,com.*,service.*" pageEncoding="utf-8"%>
+
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
@@ -78,7 +77,6 @@
 
 <!-- 模态框 -->
 <%@ include file="main/modal.jsp" %>
-<% conn.close(); %>
 <script src="js/bootstrap.js"></script>
 </body>
 </html>

@@ -1,10 +1,8 @@
-<%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
-<%@ page import="java.sql.*"%>
-<%@ include file="../../main/connect.jsp" %>
+<%@ page language="java" import="java.util.*,service.*" pageEncoding="utf-8"%>
+
 <%
+    DataService dataservice = new DataService();
 	String id = request.getParameter("id");
-	String sql = "delete from data where dataid=" + id;
-	stmt.executeUpdate(sql);							
-	conn.close();	
-	out.print("<script>alert('删除成功');location.href = '../data_manager.jsp'; </script>");		//网页跳转回上级页面
+	dataservice.delete(id);																		//删除资源
+	out.print("<script>alert('删除成功');location.href = '../data_manager.jsp'; </script>");	//网页跳转回上级页面
 %>

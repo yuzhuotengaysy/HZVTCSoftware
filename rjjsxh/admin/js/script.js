@@ -14,7 +14,7 @@ function customerAdd(fm){
 		return false;
 	} else if(fm.cusname.value.length != 10){
 		swal("请输入10位学号作为用户名");
-		document.getElementById("cusname").focus();
+		fm.cusname.focus();
 		return false;
 	} else if(fm.cuspassword.value == ""){
 		swal("请输入密码");
@@ -47,7 +47,7 @@ function dataAdd(fm){
 		fm.dataname.focus();
 		return false;
 	} else if(fm.datalink.value == ""){
-		swal("请输入资源链接");
+		swal("请添加附件");
 		fm.datalink.focus();
 		return false;
 	}  else{
@@ -186,7 +186,13 @@ function Modal(){
             				break;
             		case 6:	document.getElementById("cusemail1").value = res;break;			
             		case 7:	document.getElementById("custel1").value = res;break;
-            		case 8:	document.getElementById("cusaddress1").value = res;break;
+            		case 8: var index = res.indexOf("省")+1;
+            				if(index == 0) index = res.indexOf("市")+1;
+            				document.getElementById("province1")[0] = new Option(res.substring(0,index),res.substring(0,index));
+            				document.getElementById("province1")[0].selected = true;
+            				document.getElementById("city1")[0]=new Option(res.substring(index,res.length),res.substring(index,res.length));
+            				document.getElementById("city1")[0].selected = true;
+            				break;
             		default: break;
             	}
             }             
@@ -201,7 +207,7 @@ function Modal(){
             	switch(i){
             		case 1: document.getElementById("dataid1").value = res;break;
             		case 2: document.getElementById("dataname1").value = res;break;
-            		case 3: document.getElementById("datalink1").value = res;break;
+            		case 3: document.getElementById("datafile1").value = res;break;
             		default: break;
             	}
             }             
@@ -224,18 +230,4 @@ function Modal(){
             }             
 		$("#modal_modify").modal();
 	});
-}
-
-function test(){
-	swal({
-        title: "您确定要删除吗",
-        text: "删除后将无法恢复，请谨慎操作！",
-        type: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#DD6B55",
-        confirmButtonText: "删除",
-        closeOnConfirm: false
-    }, function () {
-        swal("删除成功！", "您已经永久删除了这条信息。", "success");
-    });
 }

@@ -1,5 +1,4 @@
-<%@ page language="java" import="java.util.*, java.sql.*" pageEncoding="utf-8"%>
-<%@ include file="../main/connect.jsp" %>
+<%@ page language="java" import="java.util.*,com.*,service.*" pageEncoding="utf-8"%>
 
 <!DOCTYPE html>
 <html>
@@ -44,21 +43,23 @@
                                 </thead>
                                 <tbody>
                                     <%
-                                        ResultSet res = stmt.executeQuery("select * from roster");
-                                        while(res.next()){
-                                        String id = res.getString(1);
+                                        RosterService rosterservice = new RosterService();
+                                        Roster roster = new Roster();
+                                        List roster_list = rosterservice.query();
+                                        int count = roster_list.size(), i = 0;
+                                        while(count-- > 0){
                                     %>  
                                     <tr class="gradeX">       
-                                        <td class="rosterid"><%=id%></td>
-                                        <td><%=res.getString(2)%></td>  
-                                        <td><%=res.getString(3)%></td>  
-                                        <td><%=res.getString(4)%></td>  
-                                        <td><%=res.getString(5)%></td>  
-                                        <td><%=res.getString(6)%></td>  
-                                        <td><%=res.getString(7)%></td> 
-                                        <td><%=res.getString(8)%></td>      
+                                        <td class="rosterid"><%=((Roster)roster_list.get(i)).getId()%></td>
+                                        <td><%=((Roster)roster_list.get(i)).getJob()%></td>  
+                                        <td><%=((Roster)roster_list.get(i)).getName()%></td>  
+                                        <td><%=((Roster)roster_list.get(i)).getSex()%></td>  
+                                        <td><%=((Roster)roster_list.get(i)).getDepartment()%></td>  
+                                        <td><%=((Roster)roster_list.get(i)).getClassess()%></td>  
+                                        <td><%=((Roster)roster_list.get(i)).getTel()%></td> 
+                                        <td><%=((Roster)roster_list.get(i)).getDormitory()%></td>      
                                         <td><%
-                                            if(res.getInt(9) == 0){
+                                            if(((Roster)roster_list.get(i)).getFee() == 0){
                                                 out.print("<input type='button' class='btn btn-primary roster_get' value='确认'>");
                                             } else{
                                                 out.print("已缴纳");
@@ -67,6 +68,7 @@
                                         </td>   
                                     </tr>   
                                     <%
+                                            i++;
                                         }
                                     %>                           
                                 </tbody>

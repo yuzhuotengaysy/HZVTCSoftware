@@ -1,21 +1,25 @@
-<%@ page language="java" import="java.util.*,com.jspsmart.upload.*" pageEncoding="utf-8"%>
-<%@ page import="java.sql.*"%>
+<%@ page contentType="text/html; charset=utf-8" import="java.util.*,java.io.*,java.text.*,java.Data.*,com.jspsmart.upload.*,java.sql.*"%>
 <%@ include file="../../main/connect.jsp" %>
+
 <%
 	request.setCharacterEncoding("utf-8");
-	SmartUpload mySmartUpload = new SmartUpload();	//类实例化一个对象
+	String name = (String)session.getAttribute("username");
+	SmartUpload su = new SmartUpload();				//实例化
+	su.setAllowedFilesList("jpg,jpeg,png,gif");		//设定允许上传的文件
 	try{
-		mySmartUpload.initialize(config, request, response);	//初始化
-		mySmartUpload.upload();
-		com.jspsmart.upload.File myfile = mySmartUpload.getFiles().getFile(0);
-		mySmartUpload.save("/upload");
-		//out.print(myfile.getFileName());
-		String img = myfile.getFileName();
-		String sql = "update admin set admpic='"+img+"' where admnickname = '" + session.getAttribute("nickname") + "'";
-		stmt.executeUpdate(sql);
-		conn.close();
-		out.print("<script>alert('上传头像成功');location.href = document.referrer;</script>");		//网页跳转回上级页面
+		su.initialize(config, request, response);	//初始化
+		su.upload();
+		com.jspsmart.upload.File file = su.getFiles().getFile(0);
+		String datetime = new SimpleDateFormat("yyyyMMddhhmmss").format(Calendar.getInstance().getTime());
+		String img = datetime + (int)(Math.random()*999)+"."+file.getFileExt();//生成随机文件名
+		file.saveAs("/upload/" + img);
+		String sql = "update admin set admpic=? where admname = ?";
+		pstmt = conn.prepareStatement(sql);
+		pstmt.setString(1, img);
+		pstmt.setString(2, name);
+		pstmt.executeUpdate();
+		out.print("<script>alert('上传头像成功');location.href = document.referrer;</script>");//返回
 	} catch (Exception e){
-		out.print("<br>Unable to upload the file.<br>" + e);
+		out.print("<script>alert('上传头像失败(请上传jpg,jpeg,png,gif格式的图片)');location.href = document.referrer;</script>");//返回
 	}
 %>

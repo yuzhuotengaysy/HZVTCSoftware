@@ -1,32 +1,35 @@
-<%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
-<%@ page import="java.sql.*"%>
-<%@ include file="../../main/connect.jsp" %>
+<%@ page language="java" import="java.util.*,com.*,service.*" pageEncoding="utf-8"%>
 
 <%-- 新增用户 --%>
 <%
 	request.setCharacterEncoding("utf-8");
-	//最大ID
-    ResultSet res = stmt.executeQuery("select max(cusid) from customer");
-    res.next();
-    int maxId = res.getInt("max(cusid)") + 1;
-
+	CustomerService customerservice = new CustomerService();
+    Customer customer = new Customer();
 	String cusname = request.getParameter("cusname");					//获得用户名
-	ResultSet nameCheck = stmt.executeQuery("select * from customer where cusname='" + cusname + "'");
-	if(nameCheck.next()){ 
+
+    //检测是否被注册
+	if(customerservice.queryBy(cusname)){ 
 	  out.print("<script>alert('该用户已经被注册');history.go(-1); </script>");
 	  return;
 	}
+
+	//注册用户
 	String cuspassword = request.getParameter("cuspassword");			//获得密码
 	String cusnickname = request.getParameter("cusnickname");			//获得昵称
 	String cussex      = request.getParameter("cussex");				//获得性别
 	String cusemail    = request.getParameter("cusemail");				//获得电子邮箱
 	String custel      = request.getParameter("custel");				//获得电话
-	String province    = request.getParameter("province");				//获得省
-	String city        = request.getParameter("city");					//获得市
-	String cusaddress  = province + city;								
-	String sql = "insert into customer values('" + maxId + "','" + cusname + "','" + cuspassword + "','" + cusnickname + "','" + cussex + "','" + cusemail + "','" + custel + "','" + cusaddress + "','default.jpg')";
-	stmt.executeUpdate(sql);
-	conn.close();
-	out.print("<script>alert('注册成功');location.href='../user_manager.jsp'; </script>");
+	String city        = request.getParameter("city");					//获得市						
+	
+	customer.setCusname(cusname);
+	customer.setCuspassword(cuspassword);
+	customer.setCusnickname(cusnickname);
+	customer.setCussex(cussex);
+	customer.setCusemail(cusemail);
+	customer.setCustel(custel);
+	customer.setCusaddress(city);
 
+	customerservice.insert(customer);
+	out.print("<script>alert('注册成功');location.href='../user_manager.jsp'; </script>");
 %>
+

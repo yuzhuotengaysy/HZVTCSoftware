@@ -1,17 +1,15 @@
-<%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
-<%@ page import="java.sql.*" %>
-<%@ include file="connect.jsp" %>
+<%@ page language="java" import="java.util.*,com.*,service.*" pageEncoding="utf-8"%>
 
 <%
   	request.setCharacterEncoding("utf-8");
-	String text = request.getParameter("message");	//获取留言
-	//最大ID
-	int maxId = 0;
-    ResultSet res = stmt.executeQuery("select max(mesid) from message");
-    res.next();
-    maxId = res.getInt(1) + 1;
+  	MessageService messageservice = new MessageService();
+  	Message message = new Message();
+	String text = request.getParameter("message");				//获取留言
+	String nickname = (String)session.getAttribute("nickname");	//获取用户昵称
 
-	String sql = "insert into message(mesid, mesnickname, mestext) values('" + maxId + "' , '" + session.getAttribute("nickname") + "' , '" + text+ "')";
-	stmt.execute(sql);
-	out.print("<script>location.href = document.referrer; </script>");
+	//发表留言
+	message.setMesnickname(nickname);
+	message.setMestext(text);
+	messageservice.insert(message);
+	out.print("<script>alert('留言成功');location.href = document.referrer; </script>");
 %>

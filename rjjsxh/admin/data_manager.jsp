@@ -1,5 +1,4 @@
-<%@ page language="java" import="java.util.*, java.sql.*" pageEncoding="utf-8"%>
-<%@ include file="../main/connect.jsp" %>
+<%@ page language="java" import="java.util.*,com.*,service.*" pageEncoding="utf-8"%>
 
 <!DOCTYPE html>
 <html>
@@ -45,17 +44,20 @@
                                     </thead>
                                     <tbody>
                                         <%
-                                            ResultSet res = stmt.executeQuery("select * from data");
-                                            while(res.next()){
-                                            String dataid = res.getString(1);
-                                            String time = res.getString(4);
-                                            time = time.substring(0,10);
+                                            DataService dataservice = new DataService();
+                                            Data data = new Data();
+                                            List data_list = dataservice.query();
+                                            int count = data_list.size(), i = 0;
+                                            while(count-- > 0){
+                                                int dataid = ((Data)data_list.get(i)).getDataid();
+                                                String time = ((Data)data_list.get(i)).getDatatime();
+                                                time = time.substring(0, 11);    
                                         %>  
                                         <tr class="gradeX">          
                                             <td class='tc'><input name='id' value="<%=dataid%>" type='checkbox'></td>
                                             <td><%=dataid%></td>
-                                            <td><%=res.getString(2)%></td>  
-                                            <td><%=res.getString(3)%></td>  
+                                            <td><%=((Data)data_list.get(i)).getDataname()%></td>  
+                                            <td><%=((Data)data_list.get(i)).getDatalink()%></td>  
                                             <td><%=time%></td>  
                                             <td>
                                                 <input type="button" class="btn btn-primary data_modify" value="修改">
@@ -63,6 +65,7 @@
                                             </td>                   
                                         </tr>
                                         <%
+                                                i++;
                                             }
                                         %>
                                     </tbody>
@@ -101,7 +104,7 @@
                     <h4 class="modal-title">发布资源</h4>
                 </div>
                 <div class="modal-body">
-                    <form class="form-horizontal m-t" name="data_add" id="data_add" action="main/data_add.jsp" method="post" onsubmit="return dataAdd(this)">
+                    <form class="form-horizontal m-t" name="data_add" id="data_add" action="main/data_add.jsp" method="post" onsubmit="return dataAdd(this)" enctype="multipart/form-data">
                         <div class="form-group">
                             <label class="col-sm-3 control-label">资源名称：</label>
                             <div class="col-sm-8">
@@ -109,9 +112,9 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">资源链接：</label>
+                            <label class="col-sm-3 control-label">附件：</label>
                             <div class="col-sm-8">
-                                <input id="datalink" name="datalink" class="form-control" type="text">
+                                <input id="datalink" name="datalink" class="form-control" type="file">
                             </div>
                         </div>
                     </form>
@@ -133,7 +136,7 @@
                     <h4 class="modal-title">修改资源</h4>
                 </div>
                 <div class="modal-body">
-                    <form class="form-horizontal m-t" name="data_modify" id="data_modify" action="main/data_modify.jsp" method="post">
+                    <form class="form-horizontal m-t" name="data_modify" id="data_modify" action="main/data_modify.jsp" method="post" enctype="multipart/form-data">
                         <div class="form-group">
                             <label class="col-sm-3 control-label">资源ID：</label>
                             <div class="col-sm-8">
@@ -147,9 +150,15 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">资源链接：</label>
+                            <label class="col-sm-3 control-label">当前附件：</label>
                             <div class="col-sm-8">
-                                <input id="datalink1" name="datalink" class="form-control" type="text">
+                                <input id="datafile1" name="datafile" class="form-control" type="text" readonly=true>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">更换附件：</label>
+                            <div class="col-sm-8">
+                                <input id="datalink1" name="datalink" class="form-control" type="file">
                             </div>
                         </div>
                     </form>

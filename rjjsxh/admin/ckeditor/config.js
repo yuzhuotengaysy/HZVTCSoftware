@@ -5,7 +5,8 @@
 
 CKEDITOR.editorConfig = function( config ) {
 	config.width = 750;
-	config.filebrowserUploadUrl="actions/ckeditorUpload";
+	config.image_previewText='';
+	config.filebrowserImageUploadUrl= "main/upload.jsp";
 	// Define changes to default configuration here.
 	// For complete reference see:
 	// http://docs.ckeditor.com/#!/api/CKEDITOR.config

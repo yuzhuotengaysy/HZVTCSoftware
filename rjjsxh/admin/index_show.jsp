@@ -1,6 +1,4 @@
-<%@ page language="java" import="java.util.*, java.sql.*" pageEncoding="utf-8"%>
-<%@ include file="../main/connect.jsp" %>
-
+<%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
 <!DOCTYPE html>
 <html>
 
@@ -125,10 +123,39 @@
                                 <div class="panel panel-default">
                                     <div class="panel-heading">
                                         <h4 class="panel-title">
+                                                <a data-toggle="collapse" data-parent="#version" href="#v13">v2.2.0</a><code class="pull-right">2016.10.30</code>
+                                            </h4>
+                                    </div>
+                                    <div id="v13" class="panel-collapse collapse in">
+                                        <div class="panel-body">
+                                            <ol>
+                                                <li>优化了在线编辑器ckeditor的图片上传功能</li>
+                                                <li>解决了bootstrap模态框和ckeditor的input框冲突的bug</li>
+                                            </ol>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">
+                                                <a data-toggle="collapse" data-parent="#version" href="#v12">v2.1.0</a><code class="pull-right">2016.10.22</code>
+                                            </h4>
+                                    </div>
+                                    <div id="v12" class="panel-collapse collapse">
+                                        <div class="panel-body">
+                                            <ol>
+                                                <li>将大量JSP代码替换为JavaBean</li>
+                                            </ol>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">
                                                 <a data-toggle="collapse" data-parent="#version" href="#v11">v2.0.0</a><code class="pull-right">2016.10.01</code>
                                             </h4>
                                     </div>
-                                    <div id="v11" class="panel-collapse collapse in">
+                                    <div id="v11" class="panel-collapse collapse">
                                         <div class="panel-body">
                                             <ol>
                                                 <li>替换了后台系统的模板</li>

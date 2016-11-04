@@ -1,19 +1,19 @@
-<%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
-<%@ page import="java.sql.*"%>
-<%@ include file="../../main/connect.jsp" %>
+<%@ page language="java" import="java.util.*,com.*,service.*" pageEncoding="utf-8"%>
+
 <%
 	request.setCharacterEncoding("utf-8");
+    NoticeService noticeservice = new NoticeService();
+    Notice notice = new Notice();
+
 	//获得信息
 	String id = request.getParameter("notid");
 	String title = request.getParameter("nottitle");
 	String content = request.getParameter("notcontent");
 
-	String sql = "update notice set nottitle=?,notcontent=? where notid = ?";
-	pstmt = conn.prepareStatement(sql);
-	pstmt.setString(1, title);
-	pstmt.setString(2, content);
-	pstmt.setString(3, id);
-	pstmt.executeUpdate();																			//修改用户信息
-	conn.close();
-	out.print("<script>alert('修改成功');location.href = '../notice_manager.jsp'; </script>");		//网页跳转回上级页面
+	//修改信息
+	notice.setNottitle(title);
+	notice.setNotcontent(content);
+	notice.setNotid(Integer.parseInt(id));
+	noticeservice.update(notice);																		//修改资源信息
+	out.print("<script>alert('修改成功');location.href = '../notice_manager.jsp'; </script>");			//网页跳转回上级页面
 %>

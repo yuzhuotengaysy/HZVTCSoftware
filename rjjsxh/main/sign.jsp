@@ -1,5 +1,4 @@
-<%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
-<%@ page import="java.sql.*"%>
+<%@ page language="java" import="java.util.*,com.*,service.*" pageEncoding="utf-8"%>
 
 <%-- 登录注销等按钮 --%>
 <%  if(session.getAttribute("username") == null){  %>
@@ -10,15 +9,18 @@
 		</li>
 <%  
     } else {  
-        String headpic = "";
-        if(session.getAttribute("nickname").equals("管理员")){       
-          ResultSet respic = stmt.executeQuery("select admpic from admin where admnickname = '管理员'" );
-          respic.next();
-          headpic = respic.getString(1);
+        String headpic = ""; //头像图片
+        if(session.getAttribute("username").equals("admin")){ 
+          AdminService adminservice = new AdminService();
+          Admin admin = new Admin();
+          admin = adminservice.queryByName("admin");
+          headpic = admin.getAdmpic();
         } else {
-          ResultSet respic = stmt.executeQuery("select cuspic from customer where cusname = '" + session.getAttribute("username") + "'");
-          respic.next();
-          headpic = respic.getString("cuspic");
+          String username = (String)session.getAttribute("username");
+          CustomerService customerservice = new CustomerService();
+          Customer customer = new Customer();
+          customer = customerservice.queryByName(username);
+          headpic = customer.getCuspic();
         }
 %>
 		<li class="dropdown">

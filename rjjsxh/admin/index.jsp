@@ -1,5 +1,4 @@
-<%@ page language="java" import="java.util.*, java.sql.*" pageEncoding="utf-8"%>
-<%@ include file="../main/connect.jsp" %>
+<%@ page language="java" import="java.util.*,com.*,service.*" pageEncoding="utf-8"%>
 
 <!DOCTYPE html>
 <html>
@@ -20,10 +19,10 @@
        if(session.getAttribute("username") == null){
            out.print("<script>location.href='login_go.jsp'</script>");
        } else{
-            String sql = "select admpic from admin where admnickname='" + session.getAttribute("nickname") + "'";
-            ResultSet res = stmt.executeQuery(sql);
-            res.next();
-            img = res.getString(1);
+            AdminService ads = new AdminService();
+            Admin ad = new Admin();
+            ad = ads.queryByName("admin");
+            img = ad.getAdmpic();
         }
     %>
 </head>

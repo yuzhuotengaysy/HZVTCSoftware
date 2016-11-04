@@ -1,6 +1,4 @@
-<%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
-<%@ page import="java.sql.*"%>
-<%@ include file="main/connect.jsp" %>
+<%@ page language="java" import="java.util.*,com.*,service.*" pageEncoding="utf-8"%>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
@@ -65,20 +63,20 @@
             <div class="row">
                 <div class="col-sm-8 col-sm-push-4">
                     <%
+                        NoticeService noticeservice = new NoticeService();
+                        Notice notice = new Notice();  
                         String id = request.getParameter("id");             //获取公告的ID
-                        String sql = "select * from notice where notid = " + id;
-                        ResultSet res = stmt.executeQuery(sql);
-                        res.next();
-                        String noticetime = res.getString(5); 
-                        noticetime = noticetime.substring(0,10);
+                        notice = noticeservice.queryBy(Integer.parseInt(id));
+                        String nottime = notice.getNottime();
+                        nottime = nottime.substring(0,11);
                     %>
-                    <h3><%=res.getString(2)%></h3>
+                    <h3><%=notice.getNottitle()%></h3>
                     <div class="noticeDate">
-                        <span class="glyphicon glyphicon-calendar" aria-hidden="true"><span>发布时间:<%=noticetime%></span></span> 
-                        <span class="glyphicon glyphicon-user" aria-hidden="true"><span>发布人:<%=res.getString(3)%></span></span>
+                        <span class="glyphicon glyphicon-calendar" aria-hidden="true"><span>发布时间:<%=nottime%></span></span> 
+                        <span class="glyphicon glyphicon-user" aria-hidden="true"><span>发布人:<%=notice.getNotauthor()%></span></span>
                     </div>
                     <div class="noticeContent">
-                        <p><%=res.getString(4)%></p>
+                        <p><%=notice.getNotcontent()%></p>
                     </div>
                 </div>
                 <div class="well col-sm-4 col-sm-pull-8 ">
@@ -92,17 +90,19 @@
                         </thead>
                         <tbody>
                         <%
-                            res = stmt.executeQuery("select * from notice order by nottime desc");
-                            int count = 8;
-                            while(count>=0 && res.next()){
-                                String time = res.getString(5);      
-                                time = time.substring(0, 11);
+                            List notice_list = noticeservice.queryDesc();
+                            int count = notice_list.size(), i = 0;                  //count:最多公告数,i：计数器
+                            if(count > 8) count = 8;
+                            while(count-- > 0){
+                                nottime = ((Notice)notice_list.get(i)).getNottime(); //公告发布时间   
+                                nottime = nottime.substring(0, 11);    
                         %>
                             <tr>
-                                <td><a href="noticedetail.jsp?id=<%=res.getInt(1)%>"><%=res.getString(2)%></a></td>
+                                <td><a href="noticedetail.jsp?id=<%=((Notice)notice_list.get(i)).getNotid()%>"><%=((Notice)notice_list.get(i)).getNottitle()%></a></td>
                             </tr>
                         <%
-                            count--;}
+                                i++;
+                            }
                         %>
                         <tr>
                             <td><a href="noticelist.jsp" style="float: right">更多公告...</a></td>
@@ -123,7 +123,6 @@
 </div>
 <!-- 模态框 -->
 <%@ include file="main/modal.jsp" %>
-<% conn.close(); %>
 <script src="js/bootstrap.js"></script>
 </body>
 </html>

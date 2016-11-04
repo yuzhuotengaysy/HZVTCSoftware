@@ -1,25 +1,32 @@
-<%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
-<%@ page import="java.sql.*"%>
-<%@ include file="../../main/connect.jsp" %>
+<%@ page language="java" import="java.util.*,com.*,service.*,com.jspsmart.upload.*,java.text.*" pageEncoding="utf-8"%>
 
 <%-- 发布资源 --%>
 <%
-  	request.setCharacterEncoding("utf-8");
-	//最大ID
-    ResultSet res = stmt.executeQuery("select max(dataid) from data");
-    res.next();
-    int maxId = res.getInt("max(dataid)") + 1;
+	request.setCharacterEncoding("utf-8");
+    DataService dataservice = new DataService();
+    Data data = new Data();
+    SmartUpload su = new SmartUpload();				//实例化
+    su.setAllowedFilesList("rar,zip");				//设定允许上传的文件
+	//发布资源
+	try{
+		su.initialize(config, request, response);	//初始化
+		su.upload();
+		com.jspsmart.upload.File file = su.getFiles().getFile(0);
+		String datalink = new SimpleDateFormat("yyyyMMddhhmmss").format(Calendar.getInstance().getTime());
+		datalink = datalink + "." + file.getFileExt();				//获得附件名字
 
-	String dataname = request.getParameter("dataname");				//获得资源名
-	ResultSet nameCheck = stmt.executeQuery("select * from data where dataname='" + dataname + "'");
-	if(nameCheck.next()){ 
-	  out.print("<script>alert('该资源已经存在');history.go(-1); </script>");
-	  return;
+		String dataname = su.getRequest().getParameter("dataname");	//获得资源名
+		if(dataservice.queryBy(dataname)){ 							//检测该资源是否存在
+		  out.print("<script>alert('该资源已经存在');history.go(-1); </script>");
+		  return;
+		}
+		
+		file.saveAs("/download/" + datalink);		//上传资源	
+		data.setDataname(dataname);					
+		data.setDatalink(datalink);
+		dataservice.insert(data);					//存入数据库
+		out.print("<script>alert('发布成功');location.href = '../data_manager.jsp'; </script>");
+	} catch (Exception e){
+		out.print("<script>alert('上传失败(请上传rar,zip格式的文件)');location.href = document.referrer;</script>");//返回
 	}
-	String datalink = request.getParameter("datalink");				//获得资源链接
-	String sql = "insert into data(dataid, dataname, datalink) values('" + maxId + "','" + dataname + "','" + datalink + "')";
-	stmt.executeUpdate(sql);
-	conn.close();
-	out.print("<script>alert('发布成功');location.href = '../data_manager.jsp'; </script>");
-
 %>

@@ -1,6 +1,5 @@
-<%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
-<%@ page import="java.sql.*"%>
-<%@ include file="main/connect.jsp" %>
+<%@ page language="java" import="java.util.*,com.*,service.*" pageEncoding="utf-8"%>
+
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
@@ -62,87 +61,78 @@
                 <button class="btn btn-default" id="changeboard" onclick="location.href = 'rollboard.jsp'"> 弹 幕 留 言</button>
                 <table class="board table">
                   <%
-                      request.setCharacterEncoding("utf-8");
-                      int PAGESIZE = 10;  
-                      int pageCount;  
-                      int curPage = 1;  
-                      String sql = "SELECT * FROM message";  
-                      PreparedStatement stat = conn.prepareStatement(sql,ResultSet.TYPE_FORWARD_ONLY,ResultSet.CONCUR_READ_ONLY);  
-                      ResultSet res = stat.executeQuery();  
-                      res.last();  
-                      int size = res.getRow();  
-                      pageCount = (size%PAGESIZE==0)?(size/PAGESIZE):(size/PAGESIZE+1);  
-                      String tmp = request.getParameter("curPage");  
-                      if(tmp==null){  
-                          tmp="1";  
-                      }  
-                      curPage = Integer.parseInt(tmp);  
-                      if(curPage>=pageCount) curPage = pageCount;  
-                      boolean flag = res.absolute((curPage-1)*PAGESIZE+1);          
-                      int count = 0;  
-                        
-                      do{  
-                          if(count>=PAGESIZE)break;  
-                          String id = res.getString(1);
-                          String nickname = res.getString(2);  
-                          String time = res.getString(4);      
+                      MessageService messageservice = new MessageService();
+                      Message message = new Message();
+                      List message_list = messageservice.query();
+                      int pages = 1;                                                //当前页码
+                      try{
+                          pages = Integer.parseInt(request.getParameter("pages")); 
+                      } catch(Exception e){}
+                      int pageSize = 10;                                            //一页显示的数量    
+                      int pageCount = (message_list.size()%pageSize==0)?(message_list.size()/pageSize):(message_list.size()/pageSize+1);  //总页数
+
+                      for(int i = (pages-1)*pageSize; i < pages*pageSize && i < message_list.size(); i++){
+                          int id = ((Message)message_list.get(i)).getMesid();
+                          String nickname = ((Message)message_list.get(i)).getMesnickname();
+                          String time = ((Message)message_list.get(i)).getMestime(); 
                           time = time.substring(0, 16);
                           String img = "";
                           if(nickname.equals("管理员")){       
-                            ResultSet respic = stmt.executeQuery("select admpic from admin where admnickname = '管理员'" );
-                            respic.next();
-                            img = respic.getString(1);
+                            AdminService adminservice = new AdminService();
+                            Admin admin = new Admin();
+                            admin = adminservice.queryByName("admin");
+                            img = admin.getAdmpic();
                           } else {
-                            ResultSet respic = stmt.executeQuery("select cuspic from customer where cusnickname = '" + nickname + "'");
-                            respic.next();
-                            img = respic.getString(1);
+                            CustomerService customerservice = new CustomerService();
+                            Customer customer = new Customer();
+                            customer = customerservice.queryByNickName(nickname);
+                            img = customer.getCuspic();
                           }
-                          count++;  
                   %>  
                       <tr>  
                           <td><img src="upload/<%=img%>" width="100" height="100"><span <%if(nickname.equals("管理员")) {out.print("style='color:red'");}%>><%=nickname%></span></td>  
                           <td>
-                            <p style="height:80px"><%=res.getString(3)%></p>
+                            <p style="height:80px"><%=((Message)message_list.get(i)).getMestext()%></p>
                             <p style="text-align:right"><a href="javascript:reply(<%=id%>)">回复</a> <%=id%>楼 <%=time%></p>
                             <textarea class="form-control" rows="5" name="reply" id="<%=id%>" style="width:50%;float:right;resize:none;display:none">讲道理 这功能还没实现 不要看了</textarea>
                             
                           </td>  
                       </tr>  
                   <%  
-                      }while(res.next());  
+                      } 
                   %>       
                 </table>
-                <form action="main/message.jsp" method="post">
-                    <textarea class="form-control" rows="5" name="message" id="messageBox"<% if(session.getAttribute("username") == null){out.print("placeholder='请登录后再留言~~~' disabled ");}
+                <form action="main/message.jsp" method="post" onsubmit="return textCheck()">
+                    <textarea id="mestext" class="form-control" rows="5" name="message" id="messageBox"<% if(session.getAttribute("username") == null){out.print("placeholder='请登录后再留言~~~' disabled ");}
                     else{out.print("placeholder='请输入留言~~~'");}%> ></textarea>
                     <input type="submit" id="publish" value=" 提 交 留 言 " <% if(session.getAttribute("username") == null){out.print("disabled");} %>>
                 </form>
                  <!-- 换页 -->
-                <nav id="paging">
-                  <ul class="pagination">
-                    <li  <% if(curPage == 1){out.print("class='disabled'");}%> >
-                      <a href="board.jsp?curPage=1">
-                        <span aria-hidden="true">首页</span>
-                      </a>
-                    </li>
-                    <li  <% if(curPage == 1){out.print("class='disabled'");}%> >
-                      <a href="board.jsp?curPage=<%=curPage==1?1:curPage-1 %>">
-                        <span aria-hidden="true">上一页</span>
-                      </a>
-                    </li>
-                    <li  <% if(curPage == pageCount){out.print("class='disabled'");}%> >
-                      <a href="board.jsp?curPage=<%=curPage+1%>" >
-                        <span aria-hidden="true">下一页</span>
-                      </a>
-                    </li>
-                    <li  <% if(curPage == pageCount){out.print("class='disabled'");}%> >
-                      <a href="board.jsp?curPage=<%=pageCount%>">
-                        <span aria-hidden="true">尾页</span>
-                      </a>
-                    </li>
-                  </ul>
-                   <div><%=count%> 条 <%=curPage%> / <%=pageCount%> 页</div>
-                </nav>
+                  <nav id="paging">
+                    <ul class="pagination">
+                      <li  <% if(pages == 1){out.print("class='disabled'");}%> >
+                        <a href="board.jsp?pages=1">
+                          <span aria-hidden="true">首页</span>
+                        </a>
+                      </li>
+                      <li  <% if(pages == 1){out.print("class='disabled'");}%> >
+                        <a href="board.jsp?pages=<%=pages==1?1:pages-1 %>">
+                          <span aria-hidden="true">上一页</span>
+                        </a>
+                      </li>
+                      <li  <% if(pages == pageCount){out.print("class='disabled'");}%> >
+                        <a href="board.jsp?pages=<%=pages==pageCount?pageCount:pages+1%>" >
+                          <span aria-hidden="true">下一页</span>
+                        </a>
+                      </li>
+                      <li  <% if(pages == pageCount){out.print("class='disabled'");}%> >
+                        <a href="board.jsp?pages=<%=pageCount%>">
+                          <span aria-hidden="true">尾页</span>
+                        </a>
+                      </li>
+                    </ul>
+                     <div><%=(message_list.size()-(pages-1)*pageSize>10)?10:message_list.size()-(pages-1)*pageSize%>条 <%=pages%> / <%=pageCount%> 页</div>
+                  </nav>
 
             </div>
         </div>
@@ -159,7 +149,6 @@
 
 <!-- 模态框 -->
 <%@ include file="main/modal.jsp" %>
-<% conn.close(); %>
 <script src="js/bootstrap.js"></script>
 <script type="text/javascript">
   function reply(i){
@@ -169,7 +158,15 @@
       } else{
           replyid.style.display="none";
       }
-      
+  }
+
+  function textCheck(){
+    if(document.getElementById('mestext').value == ""){
+      document.getElementById('mestext').focus();
+      alert("留言不能为空");
+      return false;
+    }
+    return true;
   }
 </script>
 </body>

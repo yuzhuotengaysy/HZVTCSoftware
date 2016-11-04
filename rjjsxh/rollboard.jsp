@@ -1,6 +1,5 @@
-<%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
-<%@ page import="java.sql.*"%>
-<%@ include file="main/connect.jsp" %>
+<%@ page language="java" import="java.util.*,com.*,service.*" pageEncoding="utf-8"%>
+
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
@@ -63,9 +62,11 @@
                 <button class="btn btn-default" id="changeboard" onclick="location.href = 'board.jsp'"> 普 通 留 言</button>
                 <div class="rollboard">
                     <%
-                      ResultSet res = stmt.executeQuery("select mestext from message");
-                      while(res.next()){
-						String text = res.getString(1);                   //用户留言    
+                      MessageService messageservice = new MessageService();
+                      Message message = new Message();
+                      List message_list = messageservice.query();
+                      for(int i = 0; i < message_list.size(); i++){
+						            String text = ((Message)message_list.get(i)).getMestext(); //用户留言    
                         int top = (int)(Math.random()*50+48);            //距离顶部百分比
                         int speed = (int)(Math.random()*15+5);           //文字经过速度
                         int color = (int)(Math.random()*899999+100000);  //字体颜色
@@ -75,11 +76,11 @@
                         } else {
                             out.print( "<marquee direction='left' width='100%' onmouseover=this.stop() onmouseout=this.start() style='top:"+top+"%;color:#"+color+";font-size:"+font+"px'  scrollamount="+speed+">"+text+"</marquee>");
                         }
-                    }
+                      }
                     %>
                 </div>
-                <form action="main/message.jsp" method="post">
-                    <textarea class="form-control" rows="5" name="message" id="messageBox"<% if(session.getAttribute("username") == null){out.print("placeholder='请登录后再留言~~~' disabled ");}
+                <form action="main/message.jsp" method="post" onsubmit="return textCheck()">
+                    <textarea id="mestext" class="form-control" rows="5" name="message" id="messageBox"<% if(session.getAttribute("username") == null){out.print("placeholder='请登录后再留言~~~' disabled ");}
                     else{out.print("placeholder='请输入留言~~~'");}%> ></textarea>
                     <input type="submit" id="publish" value=" 提 交 留 言 " <% if(session.getAttribute("username") == null){out.print("disabled");} %>>
                 </form>
@@ -98,7 +99,16 @@
 
 <!-- 模态框 -->
 <%@ include file="main/modal.jsp" %>
-<% conn.close(); %>
 <script src="js/bootstrap.js"></script>
+<script type="text/javascript">
+  function textCheck(){
+    if(document.getElementById('mestext').value == ""){
+      document.getElementById('mestext').focus();
+      alert("留言不能为空");
+      return false;
+    }
+    return true;
+  }
+</script>
 </body>
 </html>

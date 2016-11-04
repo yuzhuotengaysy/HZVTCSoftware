@@ -1,6 +1,4 @@
-<%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
-<%@ page import="java.sql.*"%>
-<%@ include file="main/connect.jsp" %>
+<%@ page language="java" import="java.util.*,com.*,service.*" pageEncoding="utf-8"%>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
@@ -67,34 +65,25 @@
           </thead>
           <tbody>
             <%
-                int PAGESIZE = 10;  
-                int pageCount;  
-                int curPage = 1;  
-                String sql = "SELECT * FROM notice order by nottime desc";  
-                PreparedStatement stat = conn.prepareStatement(sql,ResultSet.TYPE_FORWARD_ONLY,ResultSet.CONCUR_READ_ONLY);  
-                ResultSet res = stat.executeQuery();  
-                res.last();  
-                int size = res.getRow();  
-                pageCount = (size%PAGESIZE==0)?(size/PAGESIZE):(size/PAGESIZE+1);  
-                String tmp = request.getParameter("curPage");  
-                if(tmp==null){  
-                    tmp="1";  
-                }  
-                curPage = Integer.parseInt(tmp);  
-                if(curPage>=pageCount) curPage = pageCount;  
-                boolean flag = res.absolute((curPage-1)*PAGESIZE+1);          
-                int count = 0;  
-                do{  
-                    if(count==PAGESIZE)break;  
-                    String time = res.getString(5);      
-                    time = time.substring(0, 11);
-                    count++;  
+                NoticeService noticeservice = new NoticeService();
+                Notice notice = new Notice();
+                List notice_list = noticeservice.queryDesc();
+                int pages = 1;                                                //当前页码
+                try{
+                    pages = Integer.parseInt(request.getParameter("pages")); 
+                } catch(Exception e){}
+                int pageSize = 10;                                            //一页显示的数量    
+                int pageCount = (notice_list.size()%pageSize==0)?(notice_list.size()/pageSize):(notice_list.size()/pageSize+1);  //总页数
+
+                for(int i = (pages-1)*pageSize; i < pages*pageSize && i < notice_list.size(); i++){
+                    String noticetime = ((Notice)notice_list.get(i)).getNottime(); //公告发布时间   
+                    noticetime = noticetime.substring(0, 11);  
             %>  
                 <tr>
-                    <td><a href="noticedetail.jsp?id=<%=res.getString(1)%>"><%=res.getString(2)%></a> <span class="date"><%=time%></span></td>
+                    <td><a href="noticedetail.jsp?id=<%=((Notice)notice_list.get(i)).getNotid()%>"><%=((Notice)notice_list.get(i)).getNottitle()%></a> <span class="date"><%=noticetime%></span></td>
                 </tr>
             <%  
-                }while(res.next());
+                }
             %>  
           </tbody>
         </table>
@@ -102,30 +91,30 @@
     </div>
   </section>
   <!-- 换页 -->
-   <nav id="paging">
+  <nav id="paging">
     <ul class="pagination">
-      <li  <% if(curPage == 1){out.print("class='disabled'");}%> >
-        <a href="noticelist.jsp?curPage=1">
+      <li  <% if(pages == 1){out.print("class='disabled'");}%> >
+        <a href="noticelist.jsp?pages=1">
           <span aria-hidden="true">首页</span>
         </a>
       </li>
-      <li  <% if(curPage == 1){out.print("class='disabled'");}%> >
-        <a href="noticelist.jsp?curPage=<%=curPage==1?1:curPage-1 %>">
+      <li  <% if(pages == 1){out.print("class='disabled'");}%> >
+        <a href="noticelist.jsp?pages=<%=pages==1?1:pages-1 %>">
           <span aria-hidden="true">上一页</span>
         </a>
       </li>
-      <li  <% if(curPage == pageCount){out.print("class='disabled'");}%> >
-        <a href="noticelist.jsp?curPage=<%=curPage+1%>" >
+      <li  <% if(pages == pageCount){out.print("class='disabled'");}%> >
+        <a href="noticelist.jsp?pages=<%=pages==pageCount?pageCount:pages+1%>" >
           <span aria-hidden="true">下一页</span>
         </a>
       </li>
-      <li  <% if(curPage == pageCount){out.print("class='disabled'");}%> >
-        <a href="noticelist.jsp?curPage=<%=pageCount%>">
+      <li  <% if(pages == pageCount){out.print("class='disabled'");}%> >
+        <a href="noticelist.jsp?pages=<%=pageCount%>">
           <span aria-hidden="true">尾页</span>
         </a>
       </li>
     </ul>
-     <div><%=count%> 条 <%=curPage%> / <%=pageCount%> 页</div>
+     <div><%=(notice_list.size()-(pages-1)*pageSize>10)?10:notice_list.size()-(pages-1)*pageSize%>条 <%=pages%> / <%=pageCount%> 页</div>
   </nav>
 </div>
 
@@ -138,7 +127,6 @@
 
 <!-- 模态框 -->
 <%@ include file="main/modal.jsp" %>
-<% conn.close(); %>
 <script src="js/bootstrap.js"></script>
 </body>
 </html>
